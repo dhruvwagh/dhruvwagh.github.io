@@ -6,8 +6,8 @@
 }
 
 .profile-pic {
-    width: 50px;  /* Adjust size as needed */
-    height: 50px;
+    width: 100px;  /* Adjust size as needed */
+    height: 100px;
     border-radius: 50%;  /* Makes it circular */
     border: 2px solid #fff; /* Optional: adds a white border */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* Optional: adds a slight shadow */
