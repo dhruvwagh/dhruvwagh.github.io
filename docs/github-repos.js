@@ -46,10 +46,13 @@ function getLanguageColor(language) {
 }
 
 function generateDescription(repo) {
-    // If repo has description, use it
-    if (repo.description && repo.description.trim() !== '') return repo.description;
+    // First check if the repo already has a valid description
+    if (repo.description && repo.description.trim() !== '') {
+        return repo.description;
+    }
     
     // Generate a description based on repo name and other properties
+    // Format the repository name for better readability
     const formattedName = repo.name
         .replace(/-/g, ' ')
         .replace(/_/g, ' ')
@@ -58,56 +61,64 @@ function generateDescription(repo) {
     
     const descriptionParts = [];
     
-    // Add type of project based on language
+    // Type of project based on language
     if (repo.language) {
-        switch(repo.language.toLowerCase()) {
-            case 'html':
-            case 'css':
-            case 'javascript':
-                descriptionParts.push('Web development project');
-                break;
-            case 'python':
-                descriptionParts.push('Python-based application');
-                break;
-            case 'java':
-                descriptionParts.push('Java application');
-                break;
-            case 'c':
-            case 'c++':
-                descriptionParts.push('C/C++ based implementation');
-                break;
-            case 'verilog':
-            case 'vhdl':
-                descriptionParts.push('Hardware description implementation');
-                break;
-            default:
-                descriptionParts.push(`${repo.language} project`);
+        const lang = repo.language.toLowerCase();
+        if (lang === 'html' || lang === 'css' || lang === 'javascript') {
+            descriptionParts.push('Web development project');
+        } else if (lang === 'python') {
+            descriptionParts.push('Python application');
+        } else if (lang === 'java') {
+            descriptionParts.push('Java application');
+        } else if (lang === 'c' || lang === 'c++') {
+            descriptionParts.push('C/C++ implementation');
+        } else if (lang === 'verilog' || lang === 'vhdl') {
+            descriptionParts.push('Hardware description implementation');
+        } else {
+            descriptionParts.push(`${repo.language} project`);
         }
     } else {
-        descriptionParts.push('Project repository');
+        descriptionParts.push('Software project');
     }
     
-    // Add creation date
-    const createdDate = new Date(repo.created_at);
-    const createdYear = createdDate.getFullYear();
-    descriptionParts.push(`created in ${createdYear}`);
+    // When it was created
+    if (repo.created_at) {
+        const createdDate = new Date(repo.created_at);
+        const createdYear = createdDate.getFullYear();
+        const currentYear = new Date().getFullYear();
+        if (createdYear === currentYear) {
+            descriptionParts.push('created this year');
+        } else {
+            descriptionParts.push(`created in ${createdYear}`);
+        }
+    }
     
-    // Mention if it has a website (GitHub Pages)
+    // Is it a fork?
+    if (repo.fork) {
+        descriptionParts.push('forked from another repository');
+    }
+    
+    // Does it have GitHub Pages?
     if (repo.has_pages) {
-        descriptionParts.push('with GitHub Pages website');
+        descriptionParts.push('with a GitHub Pages website');
     }
     
-    // Put it all together
-    return `${descriptionParts.join(' ')} based on ${formattedName}.`;
+    // Add repository name
+    return `${descriptionParts.join(' ')} focused on ${formattedName}.`;
 }
 
 function truncateDescription(description, maxLength = 120) {
+    // If description is empty or just whitespace, provide a default
     if (!description || description.trim() === '') {
         return 'Repository for code storage and version control.';
     }
-    return description.length > maxLength 
-        ? description.substring(0, maxLength) + '...' 
-        : description;
+    
+    // Truncate if longer than maxLength
+    if (description.length > maxLength) {
+        return description.substring(0, maxLength) + '...';
+    }
+    
+    return description;
 }
 
 function formatDate(dateString) {
@@ -120,16 +131,10 @@ function createRepoCard(repo) {
     // Main language for the repository
     const language = repo.language || 'No language specified';
     
-    // Generate description - force regeneration if empty
-    let description = repo.description && repo.description.trim() !== '' 
-        ? repo.description 
-        : generateDescription(repo);
+    // Generate a proper description - force regeneration if empty
+    let description = generateDescription(repo);
     
-    // Ensure description isn't empty
-    if (!description || description.trim() === '') {
-        description = `Project repository for ${repo.name.replace(/-/g, ' ').replace(/_/g, ' ')}.`;
-    }
-    
+    // Format the date
     const updatedDate = formatDate(repo.updated_at);
     
     // Create HTML for the repo card
@@ -204,16 +209,21 @@ async function initializeGitHubCarousel() {
 
 function initializeSwiper() {
     window.swiper = new Swiper('.swiper-container', {
-        // Default setting - show only 1 slide on mobile
         slidesPerView: 1,
         spaceBetween: 30,
-        loop: true, // Always use loop mode
+        loop: true,
+        loopAdditionalSlides: 3,
+        centeredSlides: false,
+        initialSlide: 0,
         observer: true,
         observeParents: true,
-        centeredSlides: false,
+        updateOnWindowResize: true,
+        watchOverflow: true,
+        grabCursor: true,
         autoplay: {
             delay: 5000,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true
         },
         pagination: {
             el: '.swiper-pagination',
@@ -233,9 +243,12 @@ function initializeSwiper() {
             // when window width is >= 1024px (desktop)
             1024: {
                 slidesPerView: 3,
-                spaceBetween: 30,
-                slidesOffsetBefore: 0,
-                slidesOffsetAfter: 0
+                spaceBetween: 30
+            }
+        },
+        on: {
+            init: function() {
+                console.log('Swiper initialized with ' + this.slides.length + ' slides');
             }
         }
     });
