@@ -220,6 +220,27 @@ function initializeSwiper() {
         updateOnWindowResize: true,
         watchOverflow: true,
         grabCursor: true,
+        
+        // Enhanced touch/trackpad support
+        touchRatio: 1,
+        simulateTouch: true,
+        touchStartPreventDefault: false,
+        touchMoveStopPropagation: false,
+        touchEventsTarget: 'container',
+        
+        // Mousewheel support for trackpad gestures
+        mousewheel: {
+            forceToAxis: true,
+            sensitivity: 1,
+            releaseOnEdges: true
+        },
+        
+        // Keyboard navigation
+        keyboard: {
+            enabled: true,
+            onlyInViewport: true
+        },
+        
         autoplay: {
             delay: 5000,
             disableOnInteraction: false,
