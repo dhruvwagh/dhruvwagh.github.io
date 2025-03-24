@@ -2,6 +2,14 @@
 const githubUsername = 'dhruvwagh'; // Your GitHub username
 const repoCount = 10; // Number of repos to fetch
 
+// Detect mobile devices
+function isMobileDevice() {
+    return (window.innerWidth <= 768) || 
+           ('ontouchstart' in window) || 
+           (navigator.maxTouchPoints > 0) || 
+           (navigator.msMaxTouchPoints > 0);
+}
+
 async function fetchGitHubRepos() {
     try {
         // Fetch repositories sorted by last updated
@@ -137,6 +145,9 @@ function createRepoCard(repo) {
     // Format the date
     const updatedDate = formatDate(repo.updated_at);
     
+    // Check if we're on mobile
+    const isMobile = isMobileDevice();
+    
     // Create HTML for the repo card
     return `
         <div class="swiper-slide">
@@ -146,7 +157,7 @@ function createRepoCard(repo) {
                     <h3>${repo.name}</h3>
                 </div>
                 <div class="github-card-body">
-                    <p class="repo-description">${truncateDescription(description)}</p>
+                    <p class="repo-description">${truncateDescription(description, isMobile ? 80 : 120)}</p>
                     <p class="repo-updated">Updated: ${updatedDate}</p>
                 </div>
                 <div class="github-card-footer">
@@ -208,12 +219,15 @@ async function initializeGitHubCarousel() {
 }
 
 function initializeSwiper() {
-    window.swiper = new Swiper('.swiper-container', {
+    const isMobile = isMobileDevice();
+    
+    // Base configuration
+    const swiperConfig = {
         slidesPerView: 1,
-        spaceBetween: 30,
+        spaceBetween: isMobile ? 20 : 30,
         loop: true,
         loopAdditionalSlides: 3,
-        centeredSlides: false,
+        centeredSlides: isMobile,
         initialSlide: 0,
         observer: true,
         observeParents: true,
@@ -221,59 +235,132 @@ function initializeSwiper() {
         watchOverflow: true,
         grabCursor: true,
         
-        // Enhanced touch/trackpad support
-        touchRatio: 1,
+        // Enhanced touch support - more sensitive on mobile
+        touchRatio: isMobile ? 2 : 1.5,
         simulateTouch: true,
-        touchStartPreventDefault: false,
-        touchMoveStopPropagation: false,
-        touchEventsTarget: 'container',
+        shortSwipes: true,
+        longSwipesRatio: isMobile ? 0.4 : 0.5,
         
-        // Mousewheel support for trackpad gestures
+        // Mousewheel support (mainly for desktop)
         mousewheel: {
-            forceToAxis: true,
-            sensitivity: 1,
-            releaseOnEdges: true
+            enabled: !isMobile,
+            invert: false,
+            forceToAxis: false,
+            sensitivity: 1.5,
+            eventsTarget: '.swiper-container'
         },
         
-        // Keyboard navigation
+        // Keyboard navigation (mainly for desktop)
         keyboard: {
-            enabled: true,
-            onlyInViewport: true
+            enabled: !isMobile,
+            onlyInViewport: true,
+            pageUpDown: false
         },
         
+        // Different autoplay behavior based on device
         autoplay: {
-            delay: 5000,
+            delay: isMobile ? 4000 : 5000,
             disableOnInteraction: false,
-            pauseOnMouseEnter: true
+            pauseOnMouseEnter: !isMobile
         },
+        
+        // Pagination is especially important on mobile
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
             dynamicBullets: true,
         },
+        
+        // Navigation arrows (can be hidden on mobile via CSS)
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
         },
+        
+        // Responsive breakpoints
         breakpoints: {
             // when window width is >= 768px (tablets)
             768: {
                 slidesPerView: 2,
-                spaceBetween: 20
+                spaceBetween: 20,
+                centeredSlides: false
             },
             // when window width is >= 1024px (desktop)
             1024: {
                 slidesPerView: 3,
-                spaceBetween: 30
+                spaceBetween: 30,
+                centeredSlides: false
             }
         },
+        
         on: {
             init: function() {
                 console.log('Swiper initialized with ' + this.slides.length + ' slides');
+            },
+            // Add appropriate event listeners based on device
+            afterInit: function(swiper) {
+                // Only add manual keyboard controls on desktop
+                if (!isMobile) {
+                    document.addEventListener('keydown', function(e) {
+                        if (e.key === 'ArrowLeft') {
+                            swiper.slidePrev();
+                        } else if (e.key === 'ArrowRight') {
+                            swiper.slideNext();
+                        }
+                    });
+                    
+                    // Setup additional mouse event listeners for desktop
+                    const swiperContainer = document.querySelector('.swiper-container');
+                    if (swiperContainer) {
+                        let startX = 0;
+                        let isDragging = false;
+                        
+                        swiperContainer.addEventListener('mousedown', function(e) {
+                            isDragging = true;
+                            startX = e.clientX;
+                            e.preventDefault();
+                        });
+                        
+                        document.addEventListener('mousemove', function(e) {
+                            if (!isDragging) return;
+                            const diffX = e.clientX - startX;
+                            if (Math.abs(diffX) > 50) { // Threshold for swipe
+                                if (diffX > 0) {
+                                    swiper.slidePrev();
+                                } else {
+                                    swiper.slideNext();
+                                }
+                                isDragging = false;
+                            }
+                        });
+                        
+                        document.addEventListener('mouseup', function() {
+                            isDragging = false;
+                        });
+                    }
+                }
+            },
+            // Update mobile detection on resize
+            resize: function() {
+                this.params.touchRatio = isMobileDevice() ? 2 : 1.5;
+                this.params.centeredSlides = isMobileDevice();
+                this.params.mousewheel.enabled = !isMobileDevice();
+                this.params.keyboard.enabled = !isMobileDevice();
             }
         }
-    });
+    };
+    
+    window.swiper = new Swiper('.swiper-container', swiperConfig);
 }
+
+// Handle resize events to adapt between mobile and desktop views
+window.addEventListener('resize', function() {
+    if (window.swiper) {
+        window.swiper.params.touchRatio = isMobileDevice() ? 2 : 1.5;
+        window.swiper.params.centeredSlides = isMobileDevice();
+        window.swiper.update();
+    }
+});
 
 // Initialize GitHub repository carousel when the page loads
 document.addEventListener('DOMContentLoaded', function() {

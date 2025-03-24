@@ -547,6 +547,14 @@ main section:nth-child(6) { animation-delay: 0.6s; }
     position: relative;
     height: auto;
     max-width: 100%;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+}
+
+.swiper-container:active {
+    cursor: grabbing;
 }
 
 .swiper-wrapper {
@@ -556,6 +564,9 @@ main section:nth-child(6) { animation-delay: 0.6s; }
 }
 
 .swiper-slide {
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
     height: auto;
     opacity: 1 !important;
     transition: transform 0.3s;
@@ -570,12 +581,94 @@ main section:nth-child(6) { animation-delay: 0.6s; }
         width: 50%;
         max-width: 50%;
     }
+    
+    .github-card {
+        margin: 8px 10px;
+    }
 }
 
 @media (max-width: 768px) {
     .swiper-slide {
         width: 100%;
         max-width: 100%;
+    }
+    
+    .github-card {
+        margin: 5px;
+        min-height: 220px;
+    }
+    
+    .github-card-header h3 {
+        font-size: 1.1rem;
+    }
+    
+    .repo-description {
+        font-size: 0.9rem;
+        -webkit-line-clamp: 2;
+        max-height: 3em;
+    }
+    
+    .github-card-footer {
+        padding: 0.8rem 1rem;
+    }
+    
+    .swiper-button-next, .swiper-button-prev {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .swiper-button-next:after, .swiper-button-prev:after {
+        font-size: 1rem;
+    }
+    
+    .swiper-pagination-bullet {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .swiper-pagination-bullet-active {
+        width: 16px;
+    }
+}
+
+/* Touch-optimized styles for mobile */
+@media (max-width: 480px) {
+    .swiper-container {
+        padding-bottom: 50px;
+    }
+    
+    .github-card {
+        border-radius: 8px;
+        min-height: 200px;
+    }
+    
+    .github-card-header {
+        padding: 1rem 1rem 0.5rem 1rem;
+    }
+    
+    .github-card-body {
+        padding: 0.7rem 1rem;
+    }
+    
+    .repo-updated {
+        font-size: 0.75rem;
+    }
+    
+    .language {
+        font-size: 0.8rem;
+    }
+    
+    .repo-link {
+        font-size: 0.8rem;
+    }
+    
+    /* Larger touch targets for mobile */
+    .swiper-button-next, .swiper-button-prev {
+        display: none;
+    }
+    
+    .swiper-pagination {
+        bottom: 5px;
     }
 }
 
