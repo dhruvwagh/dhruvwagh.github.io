@@ -47,73 +47,29 @@
 
             <section id="github-projects">
                 <h2>What I'm Up To</h2>
-                <p class="section-intro">Check out my recent GitHub activities and projects:</p>
+                <p class="section-intro">My most recent GitHub activity - automatically updated</p>
                 
                 <div class="swiper-container">
                     <div class="swiper-wrapper">
-                        <!-- GitHub repo cards will be added here -->
+                        <!-- GitHub repo cards will be loaded dynamically via JavaScript -->
                         <div class="swiper-slide">
                             <div class="github-card">
                                 <div class="github-card-header">
                                     <i class="fab fa-github"></i>
-                                    <h3>Personal Portfolio</h3>
+                                    <h3>Loading repositories...</h3>
                                 </div>
-                                <p>My personal portfolio website built with HTML, CSS, and JavaScript.</p>
+                                <p>Please wait while we fetch your latest GitHub repositories.</p>
                                 <div class="github-card-footer">
-                                    <span class="language"><span class="language-dot html"></span> HTML/CSS</span>
-                                    <a href="https://github.com/dhruvwagh/dhruvwagh.github.io" target="_blank" class="repo-link">View Repo <i class="fas fa-external-link-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="swiper-slide">
-                            <div class="github-card">
-                                <div class="github-card-header">
-                                    <i class="fab fa-github"></i>
-                                    <h3>VLSI Projects</h3>
-                                </div>
-                                <p>Collection of VLSI design projects including the ALU design mentioned in my resume.</p>
-                                <div class="github-card-footer">
-                                    <span class="language"><span class="language-dot verilog"></span> Verilog/VHDL</span>
-                                    <a href="#" target="_blank" class="repo-link">View Repo <i class="fas fa-external-link-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="swiper-slide">
-                            <div class="github-card">
-                                <div class="github-card-header">
-                                    <i class="fab fa-github"></i>
-                                    <h3>Storage Accelerator</h3>
-                                </div>
-                                <p>Research implementation of novel storage accelerator architecture using PCIe FPGA.</p>
-                                <div class="github-card-footer">
-                                    <span class="language"><span class="language-dot c"></span> C/C++</span>
-                                    <a href="#" target="_blank" class="repo-link">View Repo <i class="fas fa-external-link-alt"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="swiper-slide">
-                            <div class="github-card">
-                                <div class="github-card-header">
-                                    <i class="fab fa-github"></i>
-                                    <h3>Music Generation</h3>
-                                </div>
-                                <p>Attention and BiLSTM model for MIDI music generation trained on Maestro V2 Dataset.</p>
-                                <div class="github-card-footer">
-                                    <span class="language"><span class="language-dot python"></span> Python</span>
-                                    <a href="#" target="_blank" class="repo-link">View Repo <i class="fas fa-external-link-alt"></i></a>
+                                    <span class="language"><span class="language-dot" style="background-color: #8f8f8f;"></span> Loading</span>
+                                    <a href="https://github.com/dhruvwagh" target="_blank" class="repo-link">Visit Profile <i class="fas fa-external-link-alt"></i></a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Add navigation buttons -->
+                    <div class="swiper-pagination"></div>
                     <div class="swiper-button-next"></div>
                     <div class="swiper-button-prev"></div>
-                    <!-- Add pagination -->
-                    <div class="swiper-pagination"></div>
                 </div>
             </section>
         </main>
@@ -125,35 +81,6 @@
     
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Initialize Swiper
-            var swiper = new Swiper('.swiper-container', {
-                slidesPerView: 1,
-                spaceBetween: 30,
-                loop: true,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                breakpoints: {
-                    // when window width is >= 768px
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 20
-                    },
-                    // when window width is >= 1024px
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 30
-                    }
-                }
-            });
-        });
-    </script>
+    <script src="github-repos.js"></script>
 </body>
 </html>
