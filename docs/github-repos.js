@@ -45,16 +45,80 @@ function getLanguageColor(language) {
     return colors[language] || '#8f8f8f'; // Default gray color if language not found
 }
 
+function generateDescription(repo) {
+    // If repo has description, use it
+    if (repo.description) return repo.description;
+    
+    // Generate a description based on repo name and other properties
+    const formattedName = repo.name
+        .replace(/-/g, ' ')
+        .replace(/_/g, ' ')
+        .replace(/([A-Z])/g, ' $1') // Add spaces before capital letters
+        .trim();
+    
+    const descriptionParts = [];
+    
+    // Add type of project based on language
+    if (repo.language) {
+        switch(repo.language.toLowerCase()) {
+            case 'html':
+            case 'css':
+            case 'javascript':
+                descriptionParts.push('Web development project');
+                break;
+            case 'python':
+                descriptionParts.push('Python-based application');
+                break;
+            case 'java':
+                descriptionParts.push('Java application');
+                break;
+            case 'c':
+            case 'c++':
+                descriptionParts.push('C/C++ based implementation');
+                break;
+            case 'verilog':
+            case 'vhdl':
+                descriptionParts.push('Hardware description implementation');
+                break;
+            default:
+                descriptionParts.push(`${repo.language} project`);
+        }
+    } else {
+        descriptionParts.push('Project repository');
+    }
+    
+    // Add creation date
+    const createdDate = new Date(repo.created_at);
+    const createdYear = createdDate.getFullYear();
+    descriptionParts.push(`created in ${createdYear}`);
+    
+    // Mention if it has a website (GitHub Pages)
+    if (repo.has_pages) {
+        descriptionParts.push('with GitHub Pages website');
+    }
+    
+    // Put it all together
+    return `${descriptionParts.join(' ')} based on ${formattedName}.`;
+}
+
 function truncateDescription(description, maxLength = 120) {
-    if (!description) return 'No description provided.';
+    if (!description) return 'Repository for code storage and version control.';
     return description.length > maxLength 
         ? description.substring(0, maxLength) + '...' 
         : description;
 }
 
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { year: 'numeric', month: 'short', day: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
 function createRepoCard(repo) {
     // Main language for the repository
-    const language = repo.language || 'Unknown';
+    const language = repo.language || 'No language specified';
+    const description = generateDescription(repo);
+    const updatedDate = formatDate(repo.updated_at);
     
     // Create HTML for the repo card
     return `
@@ -64,7 +128,10 @@ function createRepoCard(repo) {
                     <i class="fab fa-github"></i>
                     <h3>${repo.name}</h3>
                 </div>
-                <p>${truncateDescription(repo.description)}</p>
+                <div class="github-card-body">
+                    <p class="repo-description">${truncateDescription(description)}</p>
+                    <p class="repo-updated">Updated: ${updatedDate}</p>
+                </div>
                 <div class="github-card-footer">
                     <span class="language">
                         <span class="language-dot" style="background-color: ${getLanguageColor(language)};"></span>
@@ -101,7 +168,9 @@ async function initializeGitHubCarousel() {
                             <i class="fab fa-github"></i>
                             <h3>GitHub Repositories</h3>
                         </div>
-                        <p>No repositories found. Please check back later or visit my GitHub profile directly.</p>
+                        <div class="github-card-body">
+                            <p class="repo-description">No repositories found. Please check back later or visit my GitHub profile directly.</p>
+                        </div>
                         <div class="github-card-footer">
                             <a href="https://github.com/${githubUsername}" target="_blank" class="repo-link">
                                 Visit Profile <i class="fas fa-external-link-alt"></i>
@@ -125,7 +194,7 @@ function initializeSwiper() {
     window.swiper = new Swiper('.swiper-container', {
         slidesPerView: 1,
         spaceBetween: 30,
-        loop: true,
+        loop: document.querySelectorAll('.swiper-slide').length > 3, // Only loop if we have enough slides
         autoplay: {
             delay: 5000,
             disableOnInteraction: false,

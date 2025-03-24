@@ -538,25 +538,25 @@ main section:nth-child(6) { animation-delay: 0.6s; }
     border-radius: 4px;
 }
 
-/* GitHub Projects Section */
+/* GitHub Projects Section - Cleaner Card Design */
 .swiper-container {
     width: 100%;
     padding-bottom: 60px;
     margin-top: 20px;
+    overflow: visible; /* Allow cards to be visible outside container when animating */
 }
 
 .github-card {
     background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
-    padding: 1.8rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     height: 100%;
     display: flex;
     flex-direction: column;
     transition: transform 0.3s, box-shadow 0.3s;
-    border: none;
-    position: relative;
     overflow: hidden;
+    position: relative;
+    min-height: 250px; /* Ensure consistent card height */
 }
 
 .github-card::before {
@@ -575,40 +575,63 @@ main section:nth-child(6) { animation-delay: 0.6s; }
 }
 
 .github-card-header {
+    padding: 1.5rem 1.5rem 0.5rem 1.5rem;
     display: flex;
     align-items: center;
-    margin-bottom: 1.2rem;
+    border-bottom: 1px solid #f5f5f5;
+    padding-bottom: 1rem;
 }
 
 .github-card-header i {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     color: #333;
     margin-right: 1rem;
     opacity: 0.8;
 }
 
 .github-card-header h3 {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: #2c3e50;
     margin: 0;
     font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-.github-card p {
+.github-card-body {
+    padding: 1rem 1.5rem;
     flex-grow: 1;
-    margin-bottom: 1.8rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.repo-description {
     color: #5a6a7e;
     line-height: 1.5;
     font-size: 0.95rem;
+    margin-bottom: 1rem;
+    flex-grow: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.repo-updated {
+    font-size: 0.8rem;
+    color: #95a5a6;
+    margin: 0;
 }
 
 .github-card-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: auto;
-    padding-top: 1rem;
-    border-top: 1px solid #f5f5f5;
+    padding: 1rem 1.5rem;
+    background-color: #f9f9f9;
+    border-top: 1px solid #f0f0f0;
 }
 
 .language {
@@ -624,6 +647,7 @@ main section:nth-child(6) { animation-delay: 0.6s; }
     height: 10px;
     border-radius: 50%;
     margin-right: 0.5rem;
+    flex-shrink: 0;
 }
 
 .repo-link {
@@ -634,6 +658,7 @@ main section:nth-child(6) { animation-delay: 0.6s; }
     font-weight: 500;
     transition: all 0.3s;
     font-size: 0.9rem;
+    white-space: nowrap;
 }
 
 .repo-link i {
@@ -653,8 +678,8 @@ main section:nth-child(6) { animation-delay: 0.6s; }
 /* Swiper customization */
 .swiper-button-next, 
 .swiper-button-prev {
-    color: #3498db;
-    background-color: white;
+    color: #fff;
+    background-color: #3498db;
     width: 40px;
     height: 40px;
     border-radius: 50%;
@@ -664,8 +689,8 @@ main section:nth-child(6) { animation-delay: 0.6s; }
 
 .swiper-button-next:hover, 
 .swiper-button-prev:hover {
-    background-color: #3498db;
-    color: white;
+    background-color: #2980b9;
+    transform: scale(1.05);
 }
 
 .swiper-button-next:after,
@@ -690,6 +715,10 @@ main section:nth-child(6) { animation-delay: 0.6s; }
     opacity: 1;
     width: 20px;
     border-radius: 5px;
+}
+
+.swiper-slide {
+    height: auto;
 }
 
 /* Language Skills */
@@ -745,8 +774,4 @@ main section:nth-child(6) { animation-delay: 0.6s; }
 
 .language-dot.verilog {
     background-color: #b07219;
-}
-
-.swiper-slide {
-    height: auto;
 }
