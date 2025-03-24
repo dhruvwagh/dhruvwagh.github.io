@@ -160,6 +160,16 @@ nav a:hover::after {
     width: 80%;
 }
 
+/* Add active link style */
+nav a.active {
+    color: #3498db;
+    background-color: #f8f9fa;
+}
+
+nav a.active::after {
+    width: 80%;
+}
+
 /* Main content sections */
 main section {
     background-color: #fff;
@@ -192,6 +202,13 @@ section h2::after {
     width: 50px;
     height: 2px;
     background-color: #3498db;
+}
+
+/* Section intro text */
+.section-intro {
+    margin-bottom: 2rem;
+    font-size: 1.1rem;
+    color: #5a6a7e;
 }
 
 /* Cards for education and experience */
@@ -248,7 +265,11 @@ section h2::after {
 .skills-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 2rem;
+    gap: 1.5rem;
+}
+
+.skill-category {
+    margin-bottom: 1.5rem;
 }
 
 .skill-category h3 {
@@ -298,6 +319,14 @@ section h2::after {
     top: 0.2rem;
 }
 
+.skill-category p {
+    background-color: #f8f9fa;
+    padding: 1rem 1.2rem;
+    border-radius: 4px;
+    line-height: 1.6;
+    color: #2c3e50;
+}
+
 /* Projects section */
 .projects-grid {
     display: grid;
@@ -314,6 +343,8 @@ section h2::after {
     height: 100%;
     display: flex;
     flex-direction: column;
+    position: relative;
+    padding-top: 2.2rem;
 }
 
 .project-card:hover {
@@ -341,7 +372,7 @@ section h2::after {
 
 .project-card p {
     flex-grow: 1;
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
 }
 
 .project-links {
@@ -482,3 +513,182 @@ main section:nth-child(3) { animation-delay: 0.3s; }
 main section:nth-child(4) { animation-delay: 0.4s; }
 main section:nth-child(5) { animation-delay: 0.5s; }
 main section:nth-child(6) { animation-delay: 0.6s; }
+
+/* Add these new styles for the elements we've added */
+
+.location {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-bottom: 1rem;
+}
+
+.course, .year {
+    font-size: 0.9rem;
+    color: #3498db;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.year {
+    position: absolute;
+    top: 1.8rem;
+    right: 1.8rem;
+    background-color: rgba(52, 152, 219, 0.1);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+}
+
+/* GitHub Projects Section */
+.swiper-container {
+    width: 100%;
+    padding-bottom: 50px;
+}
+
+.github-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid #eee;
+}
+
+.github-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.github-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.github-card-header i {
+    font-size: 1.8rem;
+    color: #333;
+    margin-right: 1rem;
+}
+
+.github-card-header h3 {
+    font-size: 1.3rem;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.github-card p {
+    flex-grow: 1;
+    margin-bottom: 1.5rem;
+    color: #5a6a7e;
+}
+
+.github-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+}
+
+.language {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #5a6a7e;
+}
+
+.language-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.language-dot.html {
+    background-color: #e34c26;
+}
+
+.language-dot.javascript {
+    background-color: #f1e05a;
+}
+
+.language-dot.python {
+    background-color: #3572A5;
+}
+
+.language-dot.c {
+    background-color: #555555;
+}
+
+.language-dot.verilog {
+    background-color: #b07219;
+}
+
+.repo-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: #3498db;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.repo-link i {
+    margin-left: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.repo-link:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}
+
+/* Swiper customization */
+.swiper-button-next, 
+.swiper-button-prev {
+    color: #3498db;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: #3498db;
+}
+
+.swiper-slide {
+    height: auto;
+}
+
+/* Language Skills */
+.language-skills {
+    margin-top: 1rem;
+}
+
+.language-skill {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.language-skill:hover {
+    transform: translateX(5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.language-name {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.language-level {
+    color: #3498db;
+    font-size: 0.9rem;
+    padding: 0.3rem 0.8rem;
+    background-color: rgba(52, 152, 219, 0.1);
+    border-radius: 4px;
+}
