@@ -47,7 +47,7 @@ function getLanguageColor(language) {
 
 function generateDescription(repo) {
     // If repo has description, use it
-    if (repo.description) return repo.description;
+    if (repo.description && repo.description.trim() !== '') return repo.description;
     
     // Generate a description based on repo name and other properties
     const formattedName = repo.name
@@ -102,7 +102,9 @@ function generateDescription(repo) {
 }
 
 function truncateDescription(description, maxLength = 120) {
-    if (!description) return 'Repository for code storage and version control.';
+    if (!description || description.trim() === '') {
+        return 'Repository for code storage and version control.';
+    }
     return description.length > maxLength 
         ? description.substring(0, maxLength) + '...' 
         : description;
@@ -117,7 +119,17 @@ function formatDate(dateString) {
 function createRepoCard(repo) {
     // Main language for the repository
     const language = repo.language || 'No language specified';
-    const description = generateDescription(repo);
+    
+    // Generate description - force regeneration if empty
+    let description = repo.description && repo.description.trim() !== '' 
+        ? repo.description 
+        : generateDescription(repo);
+    
+    // Ensure description isn't empty
+    if (!description || description.trim() === '') {
+        description = `Project repository for ${repo.name.replace(/-/g, ' ').replace(/_/g, ' ')}.`;
+    }
+    
     const updatedDate = formatDate(repo.updated_at);
     
     // Create HTML for the repo card
@@ -192,9 +204,13 @@ async function initializeGitHubCarousel() {
 
 function initializeSwiper() {
     window.swiper = new Swiper('.swiper-container', {
+        // Default setting - show only 1 slide on mobile
         slidesPerView: 1,
         spaceBetween: 30,
-        loop: document.querySelectorAll('.swiper-slide').length > 3, // Only loop if we have enough slides
+        loop: true, // Always use loop mode
+        observer: true,
+        observeParents: true,
+        centeredSlides: false,
         autoplay: {
             delay: 5000,
             disableOnInteraction: false,
@@ -202,21 +218,24 @@ function initializeSwiper() {
         pagination: {
             el: '.swiper-pagination',
             clickable: true,
+            dynamicBullets: true,
         },
         navigation: {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
         },
         breakpoints: {
-            // when window width is >= 768px
+            // when window width is >= 768px (tablets)
             768: {
                 slidesPerView: 2,
                 spaceBetween: 20
             },
-            // when window width is >= 1024px
+            // when window width is >= 1024px (desktop)
             1024: {
                 slidesPerView: 3,
-                spaceBetween: 30
+                spaceBetween: 30,
+                slidesOffsetBefore: 0,
+                slidesOffsetAfter: 0
             }
         }
     });
