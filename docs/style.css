@@ -108,66 +108,64 @@ header::before {
     transform: translateY(-2px);
 }
 
-/* Navigation styles */
+/* Navigation */
 nav {
     background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    margin-bottom: 2rem;
+    padding: 1rem 0;
+    margin: 1rem 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     position: sticky;
-    top: 10px;
+    top: 0;
     z-index: 100;
 }
 
 nav ul {
-    display: flex;
     list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
     justify-content: center;
-    padding: 1rem 0;
-}
-
-nav li {
-    margin: 0 1rem;
+    gap: 2rem;
+    flex-wrap: wrap;
 }
 
 nav a {
     text-decoration: none;
-    color: #34495e;
+    color: #2c3e50;
     font-weight: 500;
-    transition: all 0.3s;
     padding: 0.5rem 1rem;
-    border-radius: 4px;
-    position: relative;
-}
-
-nav a::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: #3498db;
+    border-radius: 6px;
     transition: all 0.3s;
-    transform: translateX(-50%);
+    white-space: nowrap;
 }
 
 nav a:hover {
+    background-color: #f8f9fa;
     color: #3498db;
 }
 
-nav a:hover::after {
-    width: 80%;
-}
-
-/* Add active link style */
 nav a.active {
     color: #3498db;
-    background-color: #f8f9fa;
+    background-color: rgba(52, 152, 219, 0.1);
 }
 
-nav a.active::after {
-    width: 80%;
+/* Mobile navigation adjustments */
+@media (max-width: 768px) {
+    nav {
+        padding: 0.5rem;
+        margin: 0.5rem 0;
+    }
+    
+    nav ul {
+        gap: 0.5rem;
+        padding: 0 0.5rem;
+    }
+    
+    nav a {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.9rem;
+    }
 }
 
 /* Main content sections */
@@ -551,6 +549,7 @@ main section:nth-child(6) { animation-delay: 0.6s; }
     user-select: none;
     -webkit-user-select: none;
     touch-action: pan-y;
+    padding: 0 40px;
 }
 
 .swiper-container:active {
@@ -613,12 +612,7 @@ main section:nth-child(6) { animation-delay: 0.6s; }
     }
     
     .swiper-button-next, .swiper-button-prev {
-        width: 35px;
-        height: 35px;
-    }
-    
-    .swiper-button-next:after, .swiper-button-prev:after {
-        font-size: 1rem;
+        display: none;
     }
     
     .swiper-pagination-bullet {
@@ -628,6 +622,10 @@ main section:nth-child(6) { animation-delay: 0.6s; }
     
     .swiper-pagination-bullet-active {
         width: 16px;
+    }
+    
+    .swiper-container {
+        padding: 0;
     }
 }
 
@@ -808,45 +806,68 @@ main section:nth-child(6) { animation-delay: 0.6s; }
 /* Swiper customization */
 .swiper-button-next, 
 .swiper-button-prev {
-    color: #fff;
-    background-color: #3498db;
+    color: #3498db;
+    background-color: #fff;
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s;
-    opacity: 0.9;
+    opacity: 0;
     margin-top: -20px;
+    z-index: 10;
+    border: 1px solid rgba(52, 152, 219, 0.2);
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #3498db;
 }
 
 .swiper-button-next {
-    right: 10px;
+    right: -30px;
 }
 
 .swiper-button-prev {
-    left: 10px;
+    left: -30px;
 }
 
-.swiper-pagination {
-    bottom: 10px;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-}
-
-.swiper-pagination-bullet {
-    width: 10px;
-    height: 10px;
-    background-color: #ccc;
-    opacity: 0.5;
-    transition: all 0.3s;
-}
-
-.swiper-pagination-bullet-active {
-    background-color: #3498db;
+/* Show arrows on hover */
+.swiper-container:hover .swiper-button-next,
+.swiper-container:hover .swiper-button-prev {
     opacity: 1;
-    width: 20px;
-    border-radius: 5px;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    background-color: #3498db;
+    color: #fff;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+    transform: scale(1.1);
+}
+
+.swiper-button-next:hover:after,
+.swiper-button-prev:hover:after {
+    color: #fff;
+}
+
+/* Adjust container padding to accommodate arrows */
+.swiper-container {
+    padding: 0 40px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .swiper-button-next,
+    .swiper-button-prev {
+        display: none;
+    }
+    
+    .swiper-container {
+        padding: 0;
+    }
 }
 
 /* Language Skills */
