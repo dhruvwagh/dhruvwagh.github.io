@@ -1,0 +1,21 @@
+title: Dhruv Wagh
+description: Personal Portfolio
+baseurl: ""
+url: "https://dhruvwagh.github.io"
+
+# Build settings
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-asciidoc
+  - jekyll-include-cache
+  - jemoji
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .git/ 
